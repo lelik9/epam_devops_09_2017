@@ -1,163 +1,209 @@
 package com.epam.Philippov.selfCollection;
 
 
-public class IntList implements ArrayInterface{
+import java.util.Arrays;
 
-    private int[] arr;
-    private int currentIndex = -1;
+public class IntList implements ArrayInterface {
+
+  private static final int DEFAULT_SIZE = 16;
+  private int[] arr;
+  private int currentIndex = -1;
 
 
-    public IntList() {
-        arr = new int[16];
+  public IntList() {
+    this(DEFAULT_SIZE);
+  }
+
+  public IntList(int size) {
+    arr = new int[size];
+  }
+
+  /**
+   * добавление элемента в конец списка
+   * @param value
+   */
+  public void add(int value) {
+    if (currentIndex > arr.length) {
+      extendArray();
     }
 
-    public IntList(int size) {
-        arr = new int[size];
+    add(value, currentIndex + 1);
+  }
+
+  /**
+   * добавление элемента в указанную позицию
+   * @param value
+   * @param index
+   */
+  public void add(int value, int index) {
+    if (index > currentIndex + 1) {
+      System.err.println("Index out of bounds");
+      return;
     }
 
-    public void add(int value) {
-        // TODO добавление элемента в конец списка
-        if(currentIndex > arr.length) {
-            extendArray();
-        }
-        arr[currentIndex+1] = value;
-        currentIndex += 1;
+    if (index >= arr.length - 1) {
+      extendArray();
     }
 
+    int length = (currentIndex - 1 > 0) ? currentIndex - 1 : 1;
+    System.arraycopy(arr, index, arr, index + 1, length);
+    arr[index] = value;
 
-    public void add(int value, int index) {
-        // TODO добавление элемента в указанную позицию
+    currentIndex += 1;
 
-        if(index >= arr.length-1) {
-            extendArray();
-        }
+  }
 
-        if(index <= currentIndex){
-            int[] newArr = new int[arr.length];
+  /**
+   * изменяет значение указанного элемента
+   * @param value
+   * @param index
+   */
+  public void set(int value, int index) {
+    if (index <= currentIndex) {
+      arr[index] = value;
+    } else if (index == 0 && currentIndex == -1) {
+      arr[0] = value;
+      currentIndex += 1;
+    }
+  }
 
-            System.arraycopy(arr,0, newArr,0, index);
-            newArr[index] = value;
-            System.arraycopy(arr, index, newArr,index+1, currentIndex-index);
+  /**
+   * удаление первого вхождения указанного элемента (если он присутствует в списке)
+   * возвращает true - если элемент был удален, в противном случае false
+   * @param value
+   * @return
+   */
+  public boolean remove(int value) {
+    int index = indexOf(value);
 
-            arr = newArr;
-            currentIndex += 1;
-        }
-
+    if (index >= 0) {
+      fastRemove(index);
+      trimToSize();
+      return true;
     }
 
-    public void set(int value, int index) {
-        // TODO изменяет значение указанного элемента
-        if(index <= currentIndex) {
-            arr[index] = value;
-            currentIndex += 1;
-        }
+    return false;
+  }
+
+  /**
+   * удаление первого вхождения указанного элемента (если он присутствует в списке)
+   * возвращает true - если элемент был удален, в противном случае false
+   * @param value
+   * @return
+   */
+  public boolean removeAll(int value) {
+
+    IntList newArr = new IntList();
+
+    for (int i = 0; i <= currentIndex; i++) {
+      if (arr[i] != value) {
+        newArr.add(value);
+      }
     }
 
-    public boolean remove(int value) {
-        // TODO удаление первого вхождения указанного элемента (если он присутствует в списке)
-        // TODO возвращает true - если элемент был удален, в противном случае false
-        int index = indexOf(value);
+    int oldSize = currentIndex + 1;
+    arr = newArr.toArray();
+    currentIndex = arr.length - 1;
 
-        if (index >= 0){
-            fastRemove(index);
-            trimToSize();
-            return true;
-        }
+    return currentIndex != oldSize;
 
-        return false;
+  }
+
+  /**
+   * удаление элемента по указанному индексу
+   * возвращает удаленное значение
+   * @param index
+   * @return
+   */
+  public int removeFrom(int index) {
+
+    int value = get(index);
+
+    fastRemove(index);
+    trimToSize();
+
+    return value;
+  }
+
+  /**
+   * значение указанного элемента
+   * @param index
+   * @return
+   */
+  public int get(int index) {
+    if (index <= currentIndex) {
+      return arr[index];
     }
 
+    return -1; //FIXME throw exception
+  }
 
+  /**
+   * возвращаем копию внутреннего массива
+   * @return
+   */
+  public int[] toArray() {
+    return Arrays.copyOf(arr,currentIndex + 1);
+  }
 
-    public boolean removeAll(int value) {
-        // TODO удаление всех вхождений указанного элемента (если он присутствует в списке)
-        // TODO возвращает true - если элемент был удален, в противном случае false
-        IntList newArr = new IntList();
+  /**
+   * текущий размер списка
+   * @return
+   */
+  public int size() {
+    return currentIndex + 1;
+  }
 
-        for (int i = 0; i <= currentIndex; i++) {
-            if (arr[i] != value) {
-                newArr.add(value);
-            }
-        }
-
-        arr = newArr.toArray();
-
-        return newArr.size() > 0;
-
+  /**
+   * поиск элемента (с головы списка к хвосту)
+   * @param value
+   * @return
+   */
+  public int indexOf(int value) {
+    for (int i = 0; i <= currentIndex; i++) {
+      if (arr[i] == value) {
+        return i;
+      }
     }
 
-    public int removeFrom(int index) {
-        // TODO удаление элемента по указанному индексу
-        // TODO возвращает удаленное значение
-        int value = get(index);
+    return -1;
+  }
 
-        fastRemove(index);
-        trimToSize();
-
-        return value;
+  /**
+   * поиск элемента (c хвоста списка к голове)
+   * @param value
+   * @return
+   */
+  public int lastIndexOf(int value) {
+    for (int i = currentIndex; i <= currentIndex && i >= 0; i--) {
+      if (arr[i] == value) {
+        return i;
+      }
     }
+    return -1;
+  }
 
-    public int get(int index) {
-        // TODO значение указанного элемента
-        if (index <= currentIndex){
-            return arr[index];
-        }
-
-        return -1; //FIXME throw exception
+  /**
+   * уменьшает размер внутреннего массива до актуального значения
+   */
+  public void trimToSize() {
+    if (arr.length >= currentIndex * 2) {
+      int[] newArr = new int[currentIndex * 2];
+      System.arraycopy(arr, 0, newArr, 0, currentIndex);
+      arr = newArr;
     }
+  }
 
-    public int[] toArray() {
-        // TODO возвращаем копию внутреннего массива
-        int[] newArr = new int[currentIndex+1];
+  private void extendArray() {
+    int[] newArr = new int[arr.length * 2];
+    System.arraycopy(arr, 0, newArr, 0, currentIndex);
+    arr = newArr;
+  }
 
-        System.arraycopy(arr, 0, newArr, 0, currentIndex + 1);
-
-        return newArr;
+  private void fastRemove(int index) {
+    if (index + 1 >= arr.length) {
+      System.arraycopy(arr, index + 1, arr, index, currentIndex - index - 1);
     }
-
-    public int size() {
-        // TODO текущий размер списка
-        return currentIndex+1;
-    }
-
-    public int indexOf(int value) {
-        // TODO поиск элемента (с головы списка к хвосту)
-        for (int i = 0; i <= currentIndex; i++) {
-            if (arr[i] == value) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public int lastIndexOf(int value) {
-        // TODO поиск элемента (c хвоста списка к голове)
-        for (int i = currentIndex; i <= currentIndex; i--) {
-            if (arr[i] == value) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void trimToSize() {
-        // TODO уменьшает размер внутреннего массива до актуального значения
-        if(arr.length >= currentIndex * 3) {
-            int[] newArr = new int[currentIndex * 2];
-            System.arraycopy(arr, 0, newArr, 0, currentIndex);
-            arr = newArr;
-        }
-    }
-
-    private void extendArray() {
-        int[] newArr = new int[arr.length*2];
-        System.arraycopy(arr,0, newArr,0, currentIndex);
-        arr = newArr;
-    }
-
-    private void fastRemove(int index) {
-        System.arraycopy(arr, index, arr, index+1, currentIndex-index-1);
-        currentIndex -= 1;
-    }
+    currentIndex -= 1;
+  }
 }
