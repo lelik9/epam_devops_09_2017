@@ -1,14 +1,6 @@
 package com.epam.Philippov.selfCollection;
 
 public interface ArrayInterface {
-//    boolean contains(Object o);
-//    int indexOf(Object o);
-//    Object getSet();
-//    Object[] toArray();
-//    void setArray(Object[] arr);
-//    int size();
-//    void trimToSize(int value);
-//    void add();
     void add(int value); // TODO добавление элемента в конец списка
 
     void add(int value, int index); // TODO добавление элемента в указанную позицию
@@ -39,9 +31,4 @@ public interface ArrayInterface {
 
     int indexOf(int value); // TODO поиск элемента (с головы списка к хвосту)
 
-
-    int lastIndexOf(int value);// TODO поиск элемента (c хвоста списка к голове)
-
-
-    void trimToSize(); // TODO уменьшает размер внутреннего массива до актуального значения
 }
