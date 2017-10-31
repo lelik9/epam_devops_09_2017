@@ -1,34 +1,33 @@
 package com.epam.Philippov.selfCollection;
 
-public interface ArrayInterface {
-    void add(int value); // TODO добавление элемента в конец списка
+public interface ArrayInterface<E> {
 
-    void add(int value, int index); // TODO добавление элемента в указанную позицию
+  void add(E value); // TODO добавление элемента в конец списка
 
-    void set(int value, int index); // TODO изменяет значение указанного элемента
+  void add(E value, int index); // TODO добавление элемента в указанную позицию
 
-
-    boolean remove(int value);// TODO удаление первого вхождения указанного элемента (если он присутствует в списке)
-        // TODO возвращает true - если элемент был удален, в противном случае false
+  void set(E value, int index); // TODO изменяет значение указанного элемента
 
 
-    boolean removeAll(int value);// TODO удаление всех вхождений указанного элемента (если он присутствует в списке)
-        // TODO возвращает true - если элемент был удален, в противном случае false
+  boolean remove(E value);// TODO удаление первого вхождения указанного элемента (если он присутствует в списке)
+  // TODO возвращает true - если элемент был удален, в противном случае false
 
 
-    int removeFrom(int index);// TODO удаление элемента по указанному индексу
-        // TODO возвращает удаленное значение
+  boolean removeAll(E value);// TODO удаление всех вхождений указанного элемента (если он присутствует в списке)
+  // TODO возвращает true - если элемент был удален, в противном случае false
 
 
-    int get(int index); // TODO значение указанного элемента
+  E removeFrom(int index);// TODO удаление элемента по указанному индексу
+  // TODO возвращает удаленное значение
 
 
-    int[] toArray(); // TODO возвращаем копию внутреннего массива
+  E get(int index); // TODO значение указанного элемента
+
+  int size(); // TODO текущий размер списка
 
 
-    int size(); // TODO текущий размер списка
+  int indexOf(E value); // TODO поиск элемента (с головы списка к хвосту)
 
-
-    int indexOf(int value); // TODO поиск элемента (с головы списка к хвосту)
+  interface ListNode<E> {}
 
 }

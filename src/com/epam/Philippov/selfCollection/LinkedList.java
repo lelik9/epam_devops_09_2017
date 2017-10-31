@@ -1,45 +1,49 @@
 package com.epam.Philippov.selfCollection;
 
-public class IntLinkedList implements ArrayInterface {
+public class LinkedList<E> implements ArrayInterface<E> {
 
   private ListNode firstNode;
   private ListNode lastNode;
+  private ListNode outOfBoundNode = new ListNode(0);
   private int size = 0;
 
-  public IntLinkedList() {
+  public LinkedList() {
   }
 
-  public IntLinkedList(int... args) {
-    for (int arg : args) {
+  public LinkedList(E... args) {
+    for (E arg : args) {
       add(arg);
     }
   }
 
   @Override
-  public void add(int value) {
+  public void add(E value) {
     ListNode node = new ListNode(value);
 
     if (lastNode == null) {
       firstNode = node;
       lastNode = firstNode;
+      lastNode.setNextNode(outOfBoundNode);
     } else {
-
       if (firstNode.getNextNode() == null) {
         firstNode.setNextNode(node);
+        node.setPrevNode(firstNode);
       }
 
       lastNode.setNextNode(node);
+      node.setPrevNode(lastNode);
       lastNode = node;
+      lastNode.setNextNode(outOfBoundNode);
     }
 
     size += 1;
   }
 
   @Override
-  public void add(int value, int index) {
-    if(index == 0){
+  public void add(E value, int index) {
+    if (index == 0) {
       add(value);
-    }else {
+    } else {
       ListNode newNode = new ListNode(value);
       ListNode previousNode = getNodeByIndex(index - 1);
       ListNode currentNode = previousNode.getNextNode();
@@ -52,17 +56,17 @@ public class IntLinkedList implements ArrayInterface {
   }
 
   @Override
-  public void set(int value, int index) {
+  public void set(E value, int index) {
     checkIndex(index);
     ListNode currentNode = getNodeByIndex(index);
     currentNode.setValue(value);
   }
 
   @Override
-  public boolean remove(int value) {
+  public boolean remove(E value) {
     int index = indexOf(value);
 
-    if(index > 0) {
+    if (index > 0) {
       fastRemove(index);
       return true;
     }
@@ -70,15 +74,15 @@ public class IntLinkedList implements ArrayInterface {
   }
 
   @Override
-  public boolean removeAll(int value) {
+  public boolean removeAll(E value) {
     boolean result = false;
     ListNode node = firstNode;
 
-    for (int i = 0; i < size;) {
-      if(node.getValue() == value) {
+    for (int i = 0; i < size; ) {
+      if (node.getValue() == value) {
         fastRemove(i);
         result = true;
-      }else {
+      } else {
         i += 1;
       }
       node = node.getNextNode();
@@ -87,22 +91,19 @@ public class IntLinkedList implements ArrayInterface {
   }
 
   @Override
-  public int removeFrom(int index) {
-    return fastRemove(index);
+  @SuppressWarnings("unchecked")
+  public E removeFrom(int index) {
+    return (E) fastRemove(index);
   }
 
   @Override
-  public int get(int index) {
+  @SuppressWarnings("unchecked")
+  public E get(int index) {
     checkIndex(index);
 
     ListNode node = getNodeByIndex(index);
 
-    return node.getValue();
-  }
-
-  @Override
-  public int[] toArray() {
-    return new int[0];
+    return (E) node.getValue();
   }
 
   @Override
@@ -111,44 +112,63 @@ public class IntLinkedList implements ArrayInterface {
   }
 
   @Override
-  public int indexOf(int value) {
+  public int indexOf(Object value) {
     ListNode node = firstNode;
+    int i = 0;
 
-    for (int i = 0; i < size; i++) {
-      if(node != null) {
-        int currentValue = node.getValue();
+    while (node != outOfBoundNode) {
+      Object currentValue = node.getValue();
 
-        if (currentValue == value) {
-          return i;
-        }
-
-        node = node.getNextNode();
+      if (currentValue == value) {
+        return i;
       }
-    }
 
+      node = node.getNextNode();
+      i ++;
+    }
     return -1;
   }
 
-//  public int lastIndexOf(int value) {
-//    return 0;
-//  }
+  public int lastIndexOf(Object value) {
+    ListNode node = lastNode;
+    int i = size - 1;
+
+    while (node != firstNode) {
+      Object currentValue = node.getValue();
+
+      if (currentValue == value) {
+        return i;
+      }
+
+      node = node.getPrevNode();
+      i --;
+    }
+    return -1;
+  }
 
   private ListNode getNodeByIndex(int index) {
     checkIndex(index);
 
     ListNode node = firstNode;
 
-    if(index != 0) {
+    if (index > 0) {
       for (int i = 1; i <= index; i++) {
         node = node.getNextNode();
       }
+    } else if (index < -1) {
+      node = lastNode;
+      for (int i = 1; i < Math.abs(index); i++) {
+        node = node.getPrevNode();
+      }
+    } else if (index == -1) {
+      return lastNode;
     }
 
     return node;
   }
 
-  private int fastRemove(int index) {
-    System.out.println(index);
+  //FIXME:
+  private Object fastRemove(int index) {
     ListNode previousNode = getNodeByIndex(index - 1);
     ListNode nextNode = getNodeByIndex(index + 1);
     ListNode currentNode = getNodeByIndex(index);
@@ -159,35 +179,46 @@ public class IntLinkedList implements ArrayInterface {
   }
 
   private void checkIndex(int index) {
-    if(index >= size || size == 0) {
-      System.err.println("Index: "+index+" out of range");
+    if (index >= size || size == 0) {
+      System.err.println("Index: " + index + " out of range");
       throw new IndexOutOfBoundsException("Index out of range");
     }
   }
 
   class ListNode {
 
-    private int Value;
+    private Object value;
     private ListNode nextNode;
+    private ListNode prevNode;
 
-    ListNode(int value) {
-      Value = value;
+
+    public void setPrevNode(ListNode prevNode) {
+      this.prevNode = prevNode;
+    }
+
+    public ListNode getPrevNode() {
+
+      return prevNode;
+    }
+
+    ListNode(Object value) {
+      this.value = value;
     }
 
     void setNextNode(ListNode nextNode) {
       this.nextNode = nextNode;
     }
 
-    int getValue() {
-      return Value;
+    public Object getValue() {
+      return value;
     }
 
     ListNode getNextNode() {
       return nextNode;
     }
 
-    void setValue(int value) {
-      Value = value;
+    void setValue(Object value) {
+      this.value = value;
     }
   }
 }
