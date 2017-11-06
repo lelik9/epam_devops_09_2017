@@ -1,6 +1,6 @@
 package com.epam.Philippov.selfCollection;
 
-public class LinkedList<E> implements ArrayInterface<E> {
+public class LinkedList<E> implements ArrayInterface<E>, Iterable<E>{
 
   private ListNode firstNode;
   private ListNode lastNode;
@@ -9,6 +9,7 @@ public class LinkedList<E> implements ArrayInterface<E> {
 
   public LinkedList() {
   }
+
 
   public LinkedList(E... args) {
     for (E arg : args) {
@@ -57,16 +58,19 @@ public class LinkedList<E> implements ArrayInterface<E> {
 
   @Override
   public void set(E value, int index) {
-    checkIndex(index);
-    ListNode currentNode = getNodeByIndex(index);
-    currentNode.setValue(value);
+    if(index == 0) {
+      add(value);
+    } else {
+      ListNode currentNode = getNodeByIndex(index);
+      currentNode.setValue(value);
+    }
   }
 
   @Override
   public boolean remove(E value) {
     int index = indexOf(value);
 
-    if (index > 0) {
+    if (index >= 0) {
       fastRemove(index);
       return true;
     }
@@ -124,7 +128,7 @@ public class LinkedList<E> implements ArrayInterface<E> {
       }
 
       node = node.getNextNode();
-      i ++;
+      i++;
     }
     return -1;
   }
@@ -141,7 +145,7 @@ public class LinkedList<E> implements ArrayInterface<E> {
       }
 
       node = node.getPrevNode();
-      i --;
+      i--;
     }
     return -1;
   }
@@ -169,12 +173,25 @@ public class LinkedList<E> implements ArrayInterface<E> {
 
   //FIXME:
   private Object fastRemove(int index) {
-    ListNode previousNode = getNodeByIndex(index - 1);
-    ListNode nextNode = getNodeByIndex(index + 1);
-    ListNode currentNode = getNodeByIndex(index);
+    ListNode previousNode;
+    ListNode nextNode = outOfBoundNode;
+    ListNode currentNode;
 
-    previousNode.setNextNode(nextNode);
-    size -= 1;
+    if(index + 1 < size){
+      nextNode = getNodeByIndex(index + 1);
+    }
+
+    if(index == 0) {
+      currentNode = firstNode;
+      firstNode = nextNode;
+    } else {
+      previousNode = getNodeByIndex(index - 1);
+      currentNode = getNodeByIndex(index);
+      previousNode.setNextNode(nextNode);
+    }
+
+    --size;
+
     return currentNode.getValue();
   }
 
@@ -185,12 +202,20 @@ public class LinkedList<E> implements ArrayInterface<E> {
     }
   }
 
-  class ListNode {
+  @Override
+  public Iterator<E> iterator() {
+    return new listIterator();
+  }
+
+  private static class ListNode {
 
     private Object value;
     private ListNode nextNode;
     private ListNode prevNode;
 
+    ListNode(Object value) {
+      this.value = value;
+    }
 
     public void setPrevNode(ListNode prevNode) {
       this.prevNode = prevNode;
@@ -201,16 +226,8 @@ public class LinkedList<E> implements ArrayInterface<E> {
       return prevNode;
     }
 
-    ListNode(Object value) {
-      this.value = value;
-    }
-
     void setNextNode(ListNode nextNode) {
       this.nextNode = nextNode;
-    }
-
-    public Object getValue() {
-      return value;
     }
 
     ListNode getNextNode() {
@@ -219,6 +236,25 @@ public class LinkedList<E> implements ArrayInterface<E> {
 
     void setValue(Object value) {
       this.value = value;
+    }
+
+    public Object getValue() {
+      return value;
+    }
+  }
+
+  private class listIterator implements Iterator<E>{
+
+    private int currentIndex;
+
+    @Override
+    public boolean hasNext() {
+      return currentIndex < size;
+    }
+
+    @Override
+    public E next() {
+      return get(currentIndex++);
     }
   }
 }
