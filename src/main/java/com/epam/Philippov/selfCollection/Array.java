@@ -1,4 +1,4 @@
-//package com.epam.Philippov.selfCollection;
+//package test.java.com.epam.Philippov.selfCollection;
 //
 //public abstract class Array implements ArrayInterface{
 ////    private Object[] array;

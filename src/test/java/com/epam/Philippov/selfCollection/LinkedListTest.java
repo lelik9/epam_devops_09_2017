@@ -2,6 +2,7 @@ package com.epam.Philippov.selfCollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.epam.Philippov.selfCollection.LinkedList;
 import org.junit.jupiter.api.Test;
 
 class LinkedListTest {

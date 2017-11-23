@@ -1,8 +1,9 @@
 package com.epam.Philippov;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.epam.Philippov.Task8;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class Task8Test {
 

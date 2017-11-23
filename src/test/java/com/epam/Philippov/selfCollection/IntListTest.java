@@ -1,4 +1,4 @@
-//package com.epam.Philippov.selfCollection;
+//package test.java.com.epam.Philippov.selfCollection;
 //
 //import java.util.Arrays;
 //import org.junit.jupiter.api.Test;

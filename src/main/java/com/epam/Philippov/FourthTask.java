@@ -1,6 +1,6 @@
 //package com.epam.Philippov;
 //
-//import com.epam.Philippov.selfCollection.CharArray;
+//import test.java.com.epam.Philippov.selfCollection.CharArray;
 //import org.jetbrains.annotations.Contract;
 //
 //import java.util.Arrays;
