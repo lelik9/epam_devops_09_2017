@@ -1,38 +1,63 @@
 package com.epam.Philippov.http.server;
 
 import com.epam.Philippov.http.server.views.IndexView;
+import com.epam.Philippov.http.server.views.StaticView;
 import com.epam.Philippov.http.server.views.View;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Handler {
     private HashMap<String, Class> urlPatterns = new HashMap<>();
 
     {
         urlPatterns.put("/index", IndexView.class);
-        urlPatterns.put("/static", IndexView.class);
+        urlPatterns.put("/static", StaticView.class);
     }
 
     @SneakyThrows
     public void getResource(String request) {
         Scanner scan = new Scanner(request);
         String method = scan.next();
-        String pattern = scan.next();
+        String queryString = scan.next();
+        String query;
+        String url;
 
-        Class c = urlPatterns.get(pattern);
-        View view = (View) c.newInstance();
+        if(queryString.contains("static")){
+            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)([\\/\\w+]*.*)");
+            Matcher matcher = pattern.matcher(queryString);
+            matcher.find();
 
-        switch (method) {
-            case "get":
-                view.get(pattern);
-                break;
-            case "post":
-                view.post();
-                break;
-            default:
-                System.out.println("404 Resource not found.");
+            url = matcher.group(1);
+            query = matcher.group(2);
+
+        }else {
+            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*([\\/\\w+]*)\\/\\??([\\w+\\.=&]*)");
+            Matcher matcher = pattern.matcher(queryString);
+
+            url = matcher.group(1);
+            query = matcher.group(2);
+        }
+
+        Class c = urlPatterns.get(url);
+        if(c != null) {
+            View view = (View) c.newInstance();
+
+            switch (method) {
+                case "get":
+                    view.get(query);
+                    break;
+                case "post":
+                    view.post();
+                    break;
+                default:
+                    throw new Exception("404 Resource not found.");
+            }
+        }else {
+            throw new Exception("404 Resource not found.");
         }
 
     }
