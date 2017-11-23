@@ -20,14 +20,16 @@ public class Handler {
 
     @SneakyThrows
     public void getResource(String request) {
+        System.out.println(request);
         Scanner scan = new Scanner(request);
+        scan.useDelimiter(";");
         String method = scan.next();
         String queryString = scan.next();
         String query;
         String url;
 
         if(queryString.contains("static")){
-            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)([\\/\\w+]*.*)");
+            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)\\/([\\/\\w+]*.*)");
             Matcher matcher = pattern.matcher(queryString);
             matcher.find();
 
@@ -35,8 +37,9 @@ public class Handler {
             query = matcher.group(2);
 
         }else {
-            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*([\\/\\w+]*)\\/\\??([\\w+\\.=&]*)");
+            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+\\.]*([\\/\\w+.*]*)\\??([\\w+\\.=&]*)");
             Matcher matcher = pattern.matcher(queryString);
+            matcher.find();
 
             url = matcher.group(1);
             query = matcher.group(2);
