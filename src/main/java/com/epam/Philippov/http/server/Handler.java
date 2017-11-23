@@ -1,7 +1,5 @@
 package com.epam.Philippov.http.server;
 
-import com.epam.Philippov.http.server.views.IndexView;
-import com.epam.Philippov.http.server.views.StaticView;
 import com.epam.Philippov.http.server.views.View;
 import lombok.SneakyThrows;
 
@@ -10,16 +8,15 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Handler {
-    private HashMap<String, Class> urlPatterns = new HashMap<>();
+public abstract class Handler {
+    protected HashMap<String, Class> urlPatterns = new HashMap<>();
 
-    {
-        urlPatterns.put("/index", IndexView.class);
-        urlPatterns.put("/static", StaticView.class);
+    public void listner(String request){
+        getResource(request);
     }
 
     @SneakyThrows
-    public void getResource(String request) {
+    private void getResource(String request) {
         System.out.println(request);
         Scanner scan = new Scanner(request);
         scan.useDelimiter(";");
