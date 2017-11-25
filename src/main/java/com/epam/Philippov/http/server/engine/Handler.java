@@ -4,8 +4,10 @@ import com.epam.Philippov.http.server.engine.middleware.PostMiddleware;
 import com.epam.Philippov.http.server.engine.middleware.PreMiddleware;
 import com.epam.Philippov.http.server.engine.middleware.SendResponseMiddleware;
 import com.epam.Philippov.http.server.engine.view.View;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.io.BufferedWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,11 +24,11 @@ public class Handler {
         registerPostMiddleware(SendResponseMiddleware.class);
     }
 
-    public void listner(String request){
+    public void handle(Request request){
         getResource(request);
     }
 
-    public void registerURL(HashMap<? extends String, ? extends Class> url){
+    public void registeredURL(HashMap<? extends String, ? extends Class> url){
         urlPatterns.putAll(url);
     }
 
@@ -38,8 +40,8 @@ public class Handler {
     }
 
     @SneakyThrows
-    private void getResource(String request) {
-        Request request1 = parseRequest(request);
+    private void getResource(Request request) {
+        Request request1 = request;
 
         request1 = execPreMiddleware(request1);
 
@@ -88,34 +90,91 @@ public class Handler {
         }
     }
 
-    private Request parseRequest(String request){
-        Scanner scan = new Scanner(request);
-        scan.useDelimiter(";");
-        String method = scan.next();
-        String queryString = scan.next();
-        String query;
-        String url;
+    public class Parser {
+        public void parser(HashMap<? super String, ? super String> hhtpData, String request) {
+            Scanner scan = new Scanner(request);
 
-        if(queryString.contains("static")){
-            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)\\/([\\/\\w+]*.*)");
-            Matcher matcher = pattern.matcher(queryString);
-            matcher.find();
+            if(request.contains(": ")) {
+                scan.useDelimiter(": ");
+                hhtpData.put(scan.next(), scan.next());
+            } else {
+                hhtpData.put("method", scan.next());
+                String[]query = parseQuery(scan.next());
 
-            url = matcher.group(1);
-            query = matcher.group(2);
-
-        }else {
-            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+\\.]*([\\/\\w+.*]*)\\??([\\w+\\.=&]*)");
-            Matcher matcher = pattern.matcher(queryString);
-            matcher.find();
-
-            url = matcher.group(1);
-            query = matcher.group(2);
+                hhtpData.put("url", query[0]);
+                hhtpData.put("query", query[1]);
+                hhtpData.put("httpVersion", scan.next());
+            }
         }
 
-        Class c = urlPatterns.get(url);
+        public Request generateRequest(BufferedWriter out, HashMap<String, String> hhtpData) {
+            String url = hhtpData.remove("url");
+            return new Request(
+                    url,
+                    hhtpData.remove("method"),
+                    hhtpData.remove("query"),
+                    hhtpData.remove("data"),
+                    urlPatterns.get(url),
+                    out,
+                    hhtpData
+            );
+        }
 
-        return new Request(url,method,query, c, new HashMap<>());
+        private String[] parseQuery(String request){
+            String query;
+            String url;
+
+            if(request.contains("static")){
+                Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)\\/([\\/\\w+]*.*)");
+                Matcher matcher = pattern.matcher(request);
+                matcher.find();
+
+                url = matcher.group(1);
+                query = matcher.group(2);
+
+            }else {
+//                Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+\\.]*([\\/\\w+.*]*)\\??([\\w+\\.=&]*)");
+                Pattern pattern = Pattern.compile("([\\/\\w+.*]*)\\??([\\w+\\.=&]*)");
+                Matcher matcher = pattern.matcher(request);
+                matcher.find();
+
+                url = matcher.group(1);
+                query = matcher.group(2);
+            }
+
+            return new String[]{url, query};
+        }
     }
+
+//    private Request parseRequest(String request){
+//        Scanner scan = new Scanner(request);
+//        scan.useDelimiter(";");
+//        String method = scan.next();
+//        String queryString = scan.next();
+//        String query;
+//        String url;
+//
+//        if(queryString.contains("static")){
+//            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+.]*(\\/\\w+)\\/([\\/\\w+]*.*)");
+//            Matcher matcher = pattern.matcher(queryString);
+//            matcher.find();
+//
+//            url = matcher.group(1);
+//            query = matcher.group(2);
+//
+//        }else {
+//            Pattern pattern = Pattern.compile("https?:\\/\\/[\\d+\\.]*([\\/\\w+.*]*)\\??([\\w+\\.=&]*)");
+//            Matcher matcher = pattern.matcher(queryString);
+//            matcher.find();
+//
+//            url = matcher.group(1);
+//            query = matcher.group(2);
+//        }
+//
+//        Class c = urlPatterns.get(url);
+//
+////        return new Request(url,method,query, c, new HashMap<>());
+//        return null;
+//    }
 
 }

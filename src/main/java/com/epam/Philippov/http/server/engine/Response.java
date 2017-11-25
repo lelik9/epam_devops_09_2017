@@ -23,6 +23,7 @@ public class Response implements ResponseInterface{
     }
 
     public BufferedReader getResponse(){
+        System.out.println(response + statusCode + error);
         return null;
     }
 }
