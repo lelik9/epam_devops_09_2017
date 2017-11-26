@@ -21,7 +21,7 @@ public class Main {
         Handler handler = new Handler();
         HashMap<String, Class> urlPatterns = new HashMap<>();
 
-        urlPatterns.put("/index", IndexView.class);
+        urlPatterns.put("/", IndexView.class);
         urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", StaticView.class);
 
         handler.registeredURL(urlPatterns);

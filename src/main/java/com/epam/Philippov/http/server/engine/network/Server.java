@@ -57,17 +57,15 @@ public class Server {
                 scan.useDelimiter(": ");
                 hhtpData.put(scan.next(), scan.next());
             } else {
-                Pattern pattern = Pattern.compile("(\\w+)\\ (\\/[\\/\\w+]*.*)\\ (\\w+\\/[\\d\\.]+)");
-                Matcher matcher = pattern.matcher(request);
-                matcher.find();
+                hhtpData.put("method", scan.next());
+                String queryUrl = java.net.URLDecoder.decode(scan.next(), "UTF-8");;
 
-                hhtpData.put("method", matcher.group(1));
-                String queryUrl = java.net.URLDecoder.decode(matcher.group(2), "UTF-8");;
                 String[] query = parseQuery(queryUrl);
 
                 hhtpData.put("url", query[0]);
                 hhtpData.put("query", query[1]);
-                hhtpData.put("httpVersion", matcher.group(3));
+                hhtpData.put("httpVersion", scan.next());
+
             }
         }
 
