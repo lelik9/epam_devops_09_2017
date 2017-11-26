@@ -2,15 +2,21 @@ package com.epam.Philippov.http.server.engine;
 
 import lombok.Getter;
 
-import java.io.BufferedReader;
+import java.util.HashMap;
 
 public class Response implements ResponseInterface{
     @Getter
-    final int statusCode;
+    protected int statusCode;
     @Getter
-    final String response;
+    protected String response;
     @Getter
-    final String error;
+    protected String error;
+    @Getter
+    protected HashMap<String, String> headers = new HashMap<>();
+
+    public Response(String response) {
+        this(200, response, "");
+    }
 
     public Response(int statusCode, String response) {
         this(statusCode, response, "");
@@ -22,8 +28,12 @@ public class Response implements ResponseInterface{
         this.error = error;
     }
 
-    public BufferedReader getResponse(){
-        System.out.println(response + statusCode + error);
-        return null;
+    public Response() {
+        this(404, "", "");
     }
+
+//    public BufferedReader getResponse(){
+//        System.out.println(response + statusCode + error);
+//        return null;
+//    }
 }

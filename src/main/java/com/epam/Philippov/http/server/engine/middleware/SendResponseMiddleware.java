@@ -1,31 +1,44 @@
 package com.epam.Philippov.http.server.engine.middleware;
 
+import com.epam.Philippov.http.server.engine.Response;
 import com.epam.Philippov.http.server.engine.ResponseInterface;
 import lombok.SneakyThrows;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
-public class SendResponseMiddleware implements PostMiddleware {
-    @Override
+public class SendResponseMiddleware{
+//    @Override
     @SneakyThrows
-    public ResponseInterface call(ResponseInterface response) {
-        PrintWriter outWriter = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true);
+    public void call(Response response, BufferedWriter out) {
+//        PrintWriter outWriter = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true);
         BufferedReader reader;
 
         try {
-            reader = response.getResponse();
+            out.write("HTTP/1.1" + response.getError() + "OK\n");
 
-            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
-                outWriter.write(line + "\n");
+            StringWriter headers = new StringWriter();
+            for (String key : response.getHeaders().keySet()) {
+                headers.write(key);
+                headers.write(": ");
+                headers.write(response.getHeaders().get(key));
+                headers.write("/n");
             }
 
-        }catch (NullPointerException e){
-            outWriter.write("404 File not found.");
-        } finally {
-            outWriter = null;
-        }
+            out.write(headers.toString());
+            out.write("\n");
+            out.write(response.getResponse());
+            out.flush();
 
-        return response;
+//            reader = response.getResponse();
+//
+//            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+//                out.write(line + "\n");
+//            }
+
+        }catch (NullPointerException e){
+            out.write("404 File not found.");
+        } finally {
+            out = null;
+        }
     }
 }
