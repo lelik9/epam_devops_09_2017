@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import java.lang.reflect.Method;
 
 
-public class AuthenticationMiddleware implements PreMiddleware{
+public class AuthenticationFilter implements PreFilter {
     @Override
     @SneakyThrows
     public Request call(Request request) {

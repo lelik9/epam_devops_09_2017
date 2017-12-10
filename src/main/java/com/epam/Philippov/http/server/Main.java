@@ -1,7 +1,7 @@
 package com.epam.Philippov.http.server;
 
 import com.epam.Philippov.http.server.engine.Handler;
-import com.epam.Philippov.http.server.engine.middleware.AuthenticationMiddleware;
+import com.epam.Philippov.http.server.engine.middleware.AuthenticationFilter;
 import com.epam.Philippov.http.server.engine.network.Server;
 import com.epam.Philippov.http.server.views.IndexView;
 import com.epam.Philippov.http.server.views.StaticView;
@@ -25,7 +25,7 @@ public class Main {
         urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", StaticView.class);
 
         handler.registeredURL(urlPatterns);
-        handler.registerPreMiddleware(AuthenticationMiddleware.class);
+        handler.registerPreMiddleware(AuthenticationFilter.class);
 
         Server server = new Server(handler);
         server.listen();

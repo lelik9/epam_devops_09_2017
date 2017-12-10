@@ -1,9 +1,9 @@
 package com.epam.se2.lesson14;
 
 import com.epam.se2.lesson14.GenericArrayList;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
 class GenericArrayListTest {
     @Test

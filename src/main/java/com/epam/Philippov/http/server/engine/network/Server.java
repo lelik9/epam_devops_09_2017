@@ -2,30 +2,65 @@ package com.epam.Philippov.http.server.engine.network;
 
 import com.epam.Philippov.http.server.engine.Handler;
 import com.epam.Philippov.http.server.engine.Request;
+import com.epam.Philippov.http.server.engine.Session;
+import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Server {
     private ServerSocket serverSocket = new ServerSocket(8080);
-    private HashMap<String, String> hhtpData;
     private final Handler handler;
+    private final ExecutorService workers;
+    private static ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
+
 
     public Server(Handler handler) throws IOException {
         this.handler = handler;
+        workers = Executors.newFixedThreadPool(10);
     }
 
     public void listen() throws IOException {
         while (true) {
-            try (Socket clientSocket = serverSocket.accept();
-                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "utf-8"));
-                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
+            Socket clientSocket = serverSocket.accept();
+            workers.execute(new ServerWorker(clientSocket));
+        }
+    }
 
+    public static Session getSession(String sessionID){
+        return sessions.getOrDefault(sessionID, null);
+    }
+
+    public static void setSession(String sessionID, Session session){
+        sessions.put(sessionID, session);
+    }
+
+    private class ServerWorker implements Runnable {
+
+        private final Socket clientSocket;
+        private HashMap<String, String> hhtpData;
+
+
+        private ServerWorker(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+        }
+
+        @Override
+        @SneakyThrows
+        public void run() {
+            try (
+                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "utf-8"));
+                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
+            ) {
                 hhtpData = new HashMap<>();
                 Parser parser = new Parser();
 
@@ -45,6 +80,8 @@ public class Server {
                 }
                 Request request = parser.generateRequest(out, hhtpData);
                 handler.handle(request);
+            } finally {
+                clientSocket.close();
             }
         }
     }

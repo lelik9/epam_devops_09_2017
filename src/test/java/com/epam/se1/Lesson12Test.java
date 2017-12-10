@@ -1,9 +1,10 @@
 package com.epam.se1;
 
 import com.epam.se1.Lesson12;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+
 
 class Lesson12Test {
 
