@@ -19,8 +19,8 @@ public class HandlerFactory {
         Handler handler = new Handler();
         HashMap<String, View> urlPatterns = new HashMap<>();
         try {
-            urlPatterns.put("/", (View) Class.forName("com.epam.Philippov.http.server.views.IndexView").newInstance());
-            urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", (View) Class.forName("com.epam.Philippov.http.server.views.StaticView").newInstance());
+            urlPatterns.put("/", (View) Class.forName("com.epam.Philippov.http.server.hotelApp.views.IndexView").newInstance());
+            urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", (View) Class.forName("com.epam.Philippov.http.server.hotelApp.views.StaticView").newInstance());
             handler.registeredURL(urlPatterns);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             urlPatterns.put("/", null);

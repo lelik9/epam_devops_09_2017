@@ -1,10 +1,10 @@
 package com.epam.Philippov.http.server.engine.core;
 
-import com.epam.Philippov.http.server.engine.Request;
-import com.epam.Philippov.http.server.engine.Response;
-import com.epam.Philippov.http.server.engine.middleware.PostMiddleware;
-import com.epam.Philippov.http.server.engine.middleware.PreFilter;
-import com.epam.Philippov.http.server.engine.middleware.SendResponseMiddleware;
+import com.epam.Philippov.http.server.engine.framework.Request;
+import com.epam.Philippov.http.server.engine.framework.response.Response;
+import com.epam.Philippov.http.server.engine.framework.middleware.PostMiddleware;
+import com.epam.Philippov.http.server.engine.framework.middleware.PreFilter;
+import com.epam.Philippov.http.server.engine.framework.middleware.SendResponseMiddleware;
 import com.epam.Philippov.http.server.engine.framework.view.View;
 import lombok.SneakyThrows;
 

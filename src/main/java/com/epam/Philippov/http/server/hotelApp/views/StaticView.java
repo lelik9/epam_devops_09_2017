@@ -1,8 +1,8 @@
-package com.epam.Philippov.http.server.views;
+package com.epam.Philippov.http.server.hotelApp.views;
 
-import com.epam.Philippov.http.server.engine.FileResponse;
-import com.epam.Philippov.http.server.engine.Request;
-import com.epam.Philippov.http.server.engine.Response;
+import com.epam.Philippov.http.server.engine.framework.response.FileResponse;
+import com.epam.Philippov.http.server.engine.framework.Request;
+import com.epam.Philippov.http.server.engine.framework.response.Response;
 
 import com.epam.Philippov.http.server.engine.framework.view.View;
 import lombok.SneakyThrows;

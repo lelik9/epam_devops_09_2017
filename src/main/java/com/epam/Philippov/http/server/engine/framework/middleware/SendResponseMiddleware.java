@@ -1,12 +1,11 @@
-package com.epam.Philippov.http.server.engine.middleware;
+package com.epam.Philippov.http.server.engine.framework.middleware;
 
-import com.epam.Philippov.http.server.engine.*;
-import com.epam.Philippov.http.server.engine.network.Server;
+import com.epam.Philippov.http.server.engine.framework.Request;
+import com.epam.Philippov.http.server.engine.framework.response.Response;
 import lombok.SneakyThrows;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Random;
 
 public class SendResponseMiddleware{
 //    @Override

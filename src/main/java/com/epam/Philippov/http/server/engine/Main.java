@@ -1,11 +1,11 @@
-package com.epam.Philippov.http.server;
+package com.epam.Philippov.http.server.engine;
 
 import com.epam.Philippov.http.server.engine.core.Handler;
 import com.epam.Philippov.http.server.engine.framework.view.View;
-import com.epam.Philippov.http.server.engine.middleware.AuthenticationFilter;
-import com.epam.Philippov.http.server.engine.network.Server;
-import com.epam.Philippov.http.server.views.IndexView;
-import com.epam.Philippov.http.server.views.StaticView;
+import com.epam.Philippov.http.server.engine.framework.middleware.AuthenticationFilter;
+import com.epam.Philippov.http.server.engine.core.Server;
+import com.epam.Philippov.http.server.hotelApp.views.IndexView;
+import com.epam.Philippov.http.server.hotelApp.views.StaticView;
 
 import java.io.IOException;
 import java.util.HashMap;
