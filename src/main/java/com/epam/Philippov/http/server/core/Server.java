@@ -1,6 +1,6 @@
-package com.epam.Philippov.http.server.engine.core;
+package com.epam.Philippov.http.server.core;
 
-import com.epam.Philippov.http.server.engine.framework.Request;
+import com.epam.Philippov.http.server.framework.Request;
 import lombok.SneakyThrows;
 
 import java.io.*;

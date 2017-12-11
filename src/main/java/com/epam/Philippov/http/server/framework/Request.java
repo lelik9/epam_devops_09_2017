@@ -1,9 +1,9 @@
-package com.epam.Philippov.http.server.engine.framework;
+package com.epam.Philippov.http.server.framework;
 
-import com.epam.Philippov.http.server.engine.core.ServerSession;
-import com.epam.Philippov.http.server.engine.core.Session;
-import com.epam.Philippov.http.server.engine.framework.view.View;
-import com.epam.Philippov.http.server.engine.core.Server;
+import com.epam.Philippov.http.server.core.ServerSession;
+import com.epam.Philippov.http.server.core.Session;
+import com.epam.Philippov.http.server.framework.view.View;
+import com.epam.Philippov.http.server.core.Server;
 import lombok.Getter;
 import lombok.Setter;
 

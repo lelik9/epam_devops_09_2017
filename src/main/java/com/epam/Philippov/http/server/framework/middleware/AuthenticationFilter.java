@@ -1,9 +1,9 @@
-package com.epam.Philippov.http.server.engine.framework.middleware;
+package com.epam.Philippov.http.server.framework.middleware;
 
-import com.epam.Philippov.http.server.engine.framework.AuthenticationAnnotation;
-import com.epam.Philippov.http.server.engine.framework.Request;
+import com.epam.Philippov.http.server.framework.AuthenticationAnnotation;
+import com.epam.Philippov.http.server.framework.Request;
 
-import com.epam.Philippov.http.server.engine.framework.view.View;
+import com.epam.Philippov.http.server.framework.view.View;
 import lombok.SneakyThrows;
 import java.lang.reflect.Method;
 

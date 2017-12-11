@@ -1,11 +1,11 @@
-package com.epam.Philippov.http.server.engine.core;
+package com.epam.Philippov.http.server.core;
 
-import com.epam.Philippov.http.server.engine.framework.Request;
-import com.epam.Philippov.http.server.engine.framework.response.Response;
-import com.epam.Philippov.http.server.engine.framework.middleware.PostMiddleware;
-import com.epam.Philippov.http.server.engine.framework.middleware.PreFilter;
-import com.epam.Philippov.http.server.engine.framework.middleware.SendResponseMiddleware;
-import com.epam.Philippov.http.server.engine.framework.view.View;
+import com.epam.Philippov.http.server.framework.Request;
+import com.epam.Philippov.http.server.framework.response.Response;
+import com.epam.Philippov.http.server.framework.middleware.PostMiddleware;
+import com.epam.Philippov.http.server.framework.middleware.PreFilter;
+import com.epam.Philippov.http.server.framework.middleware.SendResponseMiddleware;
+import com.epam.Philippov.http.server.framework.view.View;
 import lombok.SneakyThrows;
 
 import java.util.Arrays;

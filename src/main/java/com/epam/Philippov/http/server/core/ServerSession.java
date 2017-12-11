@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.engine.core;
+package com.epam.Philippov.http.server.core;
 
 import java.util.HashMap;
 

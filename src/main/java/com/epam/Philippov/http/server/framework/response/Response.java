@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.engine.framework.response;
+package com.epam.Philippov.http.server.framework.response;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.engine.framework;
+package com.epam.Philippov.http.server.framework;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

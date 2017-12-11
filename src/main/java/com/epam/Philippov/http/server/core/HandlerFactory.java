@@ -1,6 +1,6 @@
-package com.epam.Philippov.http.server.engine.core;
+package com.epam.Philippov.http.server.core;
 
-import com.epam.Philippov.http.server.engine.framework.view.View;
+import com.epam.Philippov.http.server.framework.view.View;
 
 import java.util.HashMap;
 
@@ -19,8 +19,8 @@ public class HandlerFactory {
         Handler handler = new Handler();
         HashMap<String, View> urlPatterns = new HashMap<>();
         try {
-            urlPatterns.put("/", (View) Class.forName("com.epam.Philippov.http.server.hotelApp.views.IndexView").newInstance());
-            urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", (View) Class.forName("com.epam.Philippov.http.server.hotelApp.views.StaticView").newInstance());
+            urlPatterns.put("/", (View) Class.forName("com.epam.Philippov.http.hotelApp.views.IndexView").newInstance());
+            urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", (View) Class.forName("com.epam.Philippov.http.hotelApp.views.StaticView").newInstance());
             handler.registeredURL(urlPatterns);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             urlPatterns.put("/", null);
