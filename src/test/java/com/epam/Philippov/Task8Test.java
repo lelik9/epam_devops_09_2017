@@ -1,9 +1,10 @@
 package com.epam.Philippov;
 
 import com.epam.Philippov.Task8;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.assertTrue;
+
 
 class Task8Test {
 

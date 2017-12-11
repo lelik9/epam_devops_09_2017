@@ -1,39 +1,39 @@
 package com.epam.Philippov.http.server.engine.middleware;
 
-import com.epam.Philippov.http.server.engine.Response;
-import com.epam.Philippov.http.server.engine.ResponseInterface;
+import com.epam.Philippov.http.server.engine.*;
+import com.epam.Philippov.http.server.engine.network.Server;
 import lombok.SneakyThrows;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Random;
 
 public class SendResponseMiddleware{
 //    @Override
     @SneakyThrows
-    public void call(Response response, BufferedWriter out) {
-//        PrintWriter outWriter = new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true);
-        BufferedReader reader;
+    public void call(Response response, Request request) {
+        BufferedWriter out = request.getOut();
 
         try {
+            StringWriter headers = new StringWriter();
+            HashMap<String, String> responseHeaders = response.getHeaders();
+
+            responseHeaders.putAll(request.getHeaders());
+            responseHeaders.put("Cookie", request.getCoockiesAsString());
+
             out.write("HTTP/1.1" + response.getError() + "OK\n");
 
-            StringWriter headers = new StringWriter();
-            for (String key : response.getHeaders().keySet()) {
+            for (String key : responseHeaders.keySet()) {
                 headers.write(key);
                 headers.write(": ");
                 headers.write(response.getHeaders().get(key));
-                headers.write("/n");
+                headers.write("\r\n");
             }
-
             out.write(headers.toString());
             out.write("\n");
             out.write(response.getResponse());
             out.flush();
 
-//            reader = response.getResponse();
-//
-//            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
-//                out.write(line + "\n");
-//            }
 
         }catch (NullPointerException e){
             out.write("404 File not found.");
@@ -41,4 +41,5 @@ public class SendResponseMiddleware{
             out = null;
         }
     }
+
 }

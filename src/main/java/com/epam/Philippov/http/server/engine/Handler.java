@@ -1,7 +1,7 @@
 package com.epam.Philippov.http.server.engine;
 
 import com.epam.Philippov.http.server.engine.middleware.PostMiddleware;
-import com.epam.Philippov.http.server.engine.middleware.PreMiddleware;
+import com.epam.Philippov.http.server.engine.middleware.PreFilter;
 import com.epam.Philippov.http.server.engine.middleware.SendResponseMiddleware;
 import com.epam.Philippov.http.server.engine.view.View;
 import lombok.SneakyThrows;
@@ -45,9 +45,10 @@ public class Handler {
 
             Class c = urlPatterns.get(request1.getUrl());
             if (c != null) {
+                Response response;
+
                 request1.setViewClass(c);
                 request1 = execPreMiddleware(request1);
-                Response response;
                 View view = (View) c.newInstance();
 
                 switch (request1.getMethod()) {
@@ -61,7 +62,7 @@ public class Handler {
                         response = new Response(404, "", "Resource not found.");
                 }
                 execPostMiddleware(response);
-                sendMiddleware.call(response, request1.getOut());
+                sendMiddleware.call(response, request1);
             } else {
 //                throw new Exception("404 Resource not found.");
             }
@@ -83,7 +84,7 @@ public class Handler {
             Request newRequest = request;
             try {
                 for (Class middleware : preMiddleware) {
-                    PreMiddleware instance = (PreMiddleware) middleware.newInstance();
+                    PreFilter instance = (PreFilter) middleware.newInstance();
                     newRequest = instance.call(newRequest);
                 }
             } finally {
