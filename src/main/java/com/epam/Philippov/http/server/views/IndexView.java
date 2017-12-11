@@ -1,7 +1,7 @@
 package com.epam.Philippov.http.server.views;
 
 import com.epam.Philippov.http.server.engine.*;
-import com.epam.Philippov.http.server.engine.view.View;
+import com.epam.Philippov.http.server.engine.framework.view.View;
 
 
 public class IndexView extends View {

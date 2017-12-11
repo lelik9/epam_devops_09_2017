@@ -4,7 +4,7 @@ import com.epam.Philippov.http.server.engine.FileResponse;
 import com.epam.Philippov.http.server.engine.Request;
 import com.epam.Philippov.http.server.engine.Response;
 
-import com.epam.Philippov.http.server.engine.view.View;
+import com.epam.Philippov.http.server.engine.framework.view.View;
 import lombok.SneakyThrows;
 
 public class StaticView extends View {

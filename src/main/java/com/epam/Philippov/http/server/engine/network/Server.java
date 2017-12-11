@@ -1,9 +1,9 @@
 package com.epam.Philippov.http.server.engine.network;
 
-import com.epam.Philippov.http.server.engine.Handler;
+import com.epam.Philippov.http.server.engine.core.Handler;
 import com.epam.Philippov.http.server.engine.Request;
 import com.epam.Philippov.http.server.engine.Session;
-import lombok.Getter;
+import com.epam.Philippov.http.server.engine.core.HandlerFactory;
 import lombok.SneakyThrows;
 
 import java.io.*;
@@ -79,6 +79,8 @@ public class Server {
 
                 }
                 Request request = parser.generateRequest(out, hhtpData);
+                HandlerFactory factory = new HandlerFactory();
+                Handler handler = factory.getHandler("/hotel/");
                 handler.handle(request);
             } finally {
                 clientSocket.close();

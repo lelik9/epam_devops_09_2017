@@ -1,5 +1,6 @@
 package com.epam.Philippov.http.server.engine;
 
+import com.epam.Philippov.http.server.engine.framework.view.View;
 import com.epam.Philippov.http.server.engine.network.Server;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class Request {
     private final HashMap<String, String> headers;
     private final HashMap<String, String> cookies;
     @Setter
-    private Class viewClass;
+    private View viewClass;
 
     public Request(String url, String method, String query, String data, BufferedWriter out, HashMap<? extends String, ? extends String> headers) {
         this.url = url;

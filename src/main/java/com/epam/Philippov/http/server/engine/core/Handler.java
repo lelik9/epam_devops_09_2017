@@ -1,9 +1,11 @@
-package com.epam.Philippov.http.server.engine;
+package com.epam.Philippov.http.server.engine.core;
 
+import com.epam.Philippov.http.server.engine.Request;
+import com.epam.Philippov.http.server.engine.Response;
 import com.epam.Philippov.http.server.engine.middleware.PostMiddleware;
 import com.epam.Philippov.http.server.engine.middleware.PreFilter;
 import com.epam.Philippov.http.server.engine.middleware.SendResponseMiddleware;
-import com.epam.Philippov.http.server.engine.view.View;
+import com.epam.Philippov.http.server.engine.framework.view.View;
 import lombok.SneakyThrows;
 
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import java.util.LinkedList;
 
 
 public class Handler {
-    private HashMap<String, Class> urlPatterns = new HashMap<>();
+    private HashMap<String, View> urlPatterns = new HashMap<>();
     private LinkedList<Class> preMiddleware = new LinkedList<>();
     private LinkedList<Class> postMiddleware = new LinkedList<>();
     private SendResponseMiddleware sendMiddleware = new SendResponseMiddleware();
@@ -26,7 +28,7 @@ public class Handler {
         executor.getResource(request);
     }
 
-    public void registeredURL(HashMap<? extends String, ? extends Class> url){
+    public void registeredURL(HashMap<? extends String, ? extends View> url){
         urlPatterns.putAll(url);
     }
 
@@ -43,13 +45,13 @@ public class Handler {
             Request request1 = request;
 
 
-            Class c = urlPatterns.get(request1.getUrl());
-            if (c != null) {
+            View view = urlPatterns.get(request1.getUrl());
+            if (view != null) {
                 Response response;
 
-                request1.setViewClass(c);
+                request1.setViewClass(view);
                 request1 = execPreMiddleware(request1);
-                View view = (View) c.newInstance();
+
 
                 switch (request1.getMethod()) {
                     case "GET":
