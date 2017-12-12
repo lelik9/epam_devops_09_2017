@@ -2,6 +2,7 @@ package com.epam.Philippov.http.server.framework;
 
 import com.epam.Philippov.http.server.core.ServerSession;
 import com.epam.Philippov.http.server.core.Session;
+import com.epam.Philippov.http.server.core.SessionManager;
 import com.epam.Philippov.http.server.framework.view.View;
 import com.epam.Philippov.http.server.core.Server;
 import lombok.Getter;
@@ -33,7 +34,6 @@ public class Request {
         this.headers = new HashMap<>(headers);
         cookies = new HashMap<>();
         setCookies();
-        checkSession();
     }
 
     public String getCoockiesAsString() {
@@ -50,20 +50,7 @@ public class Request {
 
     public Session getSession() {
         String sessionID = cookies.getOrDefault("sessionID", "");
-        return Server.getSession(sessionID);
-    }
-
-    private void checkSession() {
-
-        String sessionID = cookies.getOrDefault("sessionID", "");
-
-        if(sessionID.equals("")) {
-            sessionID = String.valueOf(new Random().nextLong());
-            Session session = new ServerSession();
-            session.setValue("UserName", "Alex");
-            Server.setSession(sessionID, session);
-            headers.put("Set-Cookie", "sessionID="+sessionID);
-        }
+        return SessionManager.getSession(sessionID);
     }
 
     private void setCookies() {

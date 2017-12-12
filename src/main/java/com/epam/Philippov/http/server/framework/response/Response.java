@@ -32,6 +32,11 @@ public class Response implements ResponseInterface{
         this(404, "", "");
     }
 
+    @Override
+    public void setHeader(String key, String value) {
+        headers.put(key, value);
+    }
+
 //    public BufferedReader getResponse(){
 //        System.out.println(response + statusCode + error);
 //        return null;

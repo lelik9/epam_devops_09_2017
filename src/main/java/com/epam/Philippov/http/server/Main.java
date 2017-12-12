@@ -14,22 +14,12 @@ public class Main {
     /**
      * HTTP server entry point.
      * Request examples:
-     * get;http://192.168.1.1/static/Гостиница «Волхов» – официальный сайт_files/04.jpg
-     * get;http://192.168.1.1/index
+     * get;http://192.168.1.1/Гостиница «Волхов» – официальный сайт_files/04.jpg
+     * get;http://192.168.1.1/
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        Handler handler = new Handler();
-        HashMap<String, View> urlPatterns = new HashMap<>();
-
-        urlPatterns.put("/", new IndexView());
-        urlPatterns.put("/Гостиница «Волхов» – официальный сайт_files", new StaticView());
-
-        handler.registeredURL(urlPatterns);
-        handler.registerPreMiddleware(AuthenticationFilter.class);
-
-        Server server = new Server(handler);
+        Server server = new Server();
         server.listen();
-
     }
 }

@@ -4,23 +4,26 @@ import com.epam.Philippov.http.server.framework.Request;
 import com.epam.Philippov.http.server.framework.response.Response;
 import com.epam.Philippov.http.server.framework.middleware.PostMiddleware;
 import com.epam.Philippov.http.server.framework.middleware.PreFilter;
-import com.epam.Philippov.http.server.framework.middleware.SendResponseMiddleware;
 import com.epam.Philippov.http.server.framework.view.View;
 import lombok.SneakyThrows;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 
 public class Handler {
     private HashMap<String, View> urlPatterns = new HashMap<>();
     private LinkedList<Class> preMiddleware = new LinkedList<>();
     private LinkedList<Class> postMiddleware = new LinkedList<>();
-    private SendResponseMiddleware sendMiddleware = new SendResponseMiddleware();
+    private SendResponse sendMiddleware = new SendResponse();
+    private String appName;
+    private SessionManager sessionManager;
 
-    public Handler() {
-
+    public Handler(String appName) {
+        this.appName = appName;
+        sessionManager = new SessionManager(appName);
     }
 
     public void handle(Request request){
@@ -42,29 +45,28 @@ public class Handler {
     private class Executor {
         @SneakyThrows
         private void getResource(Request request) {
-            Request request1 = request;
+            checkSession(request);
 
-
-            View view = urlPatterns.get(request1.getUrl());
+            View view = urlPatterns.get(request.getUrl());
             if (view != null) {
                 Response response;
 
-                request1.setViewClass(view);
-                request1 = execPreMiddleware(request1);
+                request.setViewClass(view);
+                request = execPreMiddleware(request);
 
 
-                switch (request1.getMethod()) {
+                switch (request.getMethod()) {
                     case "GET":
-                        response = view.get(request1);
+                        response = view.get(request);
                         break;
                     case "POST":
-                        response = view.post(request1);
+                        response = view.post(request);
                         break;
                     default:
                         response = new Response(404, "", "Resource not found.");
                 }
                 execPostMiddleware(response);
-                sendMiddleware.call(response, request1);
+                sendMiddleware.call(response, request);
             } else {
 //                throw new Exception("404 Resource not found.");
             }
@@ -91,6 +93,19 @@ public class Handler {
                 }
             } finally {
                 return newRequest;
+            }
+        }
+
+        private void checkSession(Request request) {
+
+            String sessionID = request.getCookies().getOrDefault("sessionID", "");
+
+            if(sessionID.equals("")) {
+                sessionID = String.valueOf(new Random().nextLong());
+                Session session = new ServerSession();
+                session.setValue("UserName", "Alex");
+                sessionManager.setSession(sessionID, session);
+                request.getHeaders().put("Set-Cookie", "sessionID="+sessionID);
             }
         }
 

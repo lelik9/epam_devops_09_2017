@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.framework.middleware;
+package com.epam.Philippov.http.server.core;
 
 import com.epam.Philippov.http.server.framework.Request;
 import com.epam.Philippov.http.server.framework.response.Response;
@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import java.io.*;
 import java.util.HashMap;
 
-public class SendResponseMiddleware{
+public class SendResponse {
 //    @Override
     @SneakyThrows
     public void call(Response response, Request request) {

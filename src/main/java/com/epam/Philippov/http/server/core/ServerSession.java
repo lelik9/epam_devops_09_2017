@@ -1,8 +1,9 @@
 package com.epam.Philippov.http.server.core;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class ServerSession implements Session {
+public class ServerSession implements Session, Serializable {
     private HashMap<String, Object> sessionValues = new HashMap<>();
 
     @Override

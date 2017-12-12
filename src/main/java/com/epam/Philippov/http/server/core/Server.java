@@ -16,13 +16,12 @@ import java.util.regex.Pattern;
 
 public class Server {
     private ServerSocket serverSocket = new ServerSocket(8080);
-    private final Handler handler;
+    private HandlerFactory factory;
     private final ExecutorService workers;
-    private static ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
 
 
-    public Server(Handler handler) throws IOException {
-        this.handler = handler;
+    public Server() throws IOException {
+        factory = new HandlerFactory();
         workers = Executors.newFixedThreadPool(10);
     }
 
@@ -31,14 +30,6 @@ public class Server {
             Socket clientSocket = serverSocket.accept();
             workers.execute(new ServerWorker(clientSocket));
         }
-    }
-
-    public static Session getSession(String sessionID){
-        return sessions.getOrDefault(sessionID, null);
-    }
-
-    public static void setSession(String sessionID, Session session){
-        sessions.put(sessionID, session);
     }
 
     private class ServerWorker implements Runnable {
@@ -76,8 +67,7 @@ public class Server {
 
                 }
                 Request request = parser.generateRequest(out, hhtpData);
-                HandlerFactory factory = new HandlerFactory();
-                Handler handler = factory.getHandler("/hotel/");
+                Handler handler = factory.getHandler(request.getUrl());
                 handler.handle(request);
             } finally {
                 clientSocket.close();
