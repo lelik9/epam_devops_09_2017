@@ -1,7 +1,7 @@
-package com.epam.Philippov.http.server.engine.view;
+package com.epam.Philippov.http.server.framework.view;
 
-import com.epam.Philippov.http.server.engine.Request;
-import com.epam.Philippov.http.server.engine.Response;
+import com.epam.Philippov.http.server.framework.Request;
+import com.epam.Philippov.http.server.framework.response.Response;
 
 import lombok.SneakyThrows;
 

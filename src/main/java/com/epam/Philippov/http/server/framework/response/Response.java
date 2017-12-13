@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.engine;
+package com.epam.Philippov.http.server.framework.response;
 
 import lombok.Getter;
 
@@ -30,6 +30,11 @@ public class Response implements ResponseInterface{
 
     public Response() {
         this(404, "", "");
+    }
+
+    @Override
+    public void setHeader(String key, String value) {
+        headers.put(key, value);
     }
 
 //    public BufferedReader getResponse(){

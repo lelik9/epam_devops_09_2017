@@ -1,7 +1,11 @@
-package com.epam.Philippov.http.server.views;
+package com.epam.Philippov.http.hotelApp.views;
 
-import com.epam.Philippov.http.server.engine.*;
-import com.epam.Philippov.http.server.engine.view.View;
+import com.epam.Philippov.http.server.core.Session;
+import com.epam.Philippov.http.server.framework.AuthenticationAnnotation;
+import com.epam.Philippov.http.server.framework.Request;
+import com.epam.Philippov.http.server.framework.response.FileResponse;
+import com.epam.Philippov.http.server.framework.response.Response;
+import com.epam.Philippov.http.server.framework.view.View;
 
 
 public class IndexView extends View {

@@ -1,6 +1,6 @@
-package com.epam.Philippov.http.server.engine.middleware;
+package com.epam.Philippov.http.server.framework.middleware;
 
-import com.epam.Philippov.http.server.engine.Request;
+import com.epam.Philippov.http.server.framework.Request;
 
 public class SessionFilter implements PreFilter{
     @Override

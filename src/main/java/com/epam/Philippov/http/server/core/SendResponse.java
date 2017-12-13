@@ -1,14 +1,13 @@
-package com.epam.Philippov.http.server.engine.middleware;
+package com.epam.Philippov.http.server.core;
 
-import com.epam.Philippov.http.server.engine.*;
-import com.epam.Philippov.http.server.engine.network.Server;
+import com.epam.Philippov.http.server.framework.Request;
+import com.epam.Philippov.http.server.framework.response.Response;
 import lombok.SneakyThrows;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Random;
 
-public class SendResponseMiddleware{
+public class SendResponse {
 //    @Override
     @SneakyThrows
     public void call(Response response, Request request) {

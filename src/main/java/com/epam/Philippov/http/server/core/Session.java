@@ -1,4 +1,4 @@
-package com.epam.Philippov.http.server.engine;
+package com.epam.Philippov.http.server.core;
 
 public interface Session {
 
