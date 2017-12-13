@@ -1,10 +1,9 @@
-package com.epam.Philippov.http.server.core;
+package com.my.http.server.core;
 
 import com.epam.Philippov.http.framework.errors.Http404;
 import com.epam.Philippov.http.framework.view.View;
-import org.apache.logging.log4j.core.util.ArrayUtils;
-
 import java.util.HashMap;
+import org.apache.logging.log4j.core.util.ArrayUtils;
 
 public class HandlerFactory {
     private HashMap<String, Handler> handlersList = new HashMap<>();

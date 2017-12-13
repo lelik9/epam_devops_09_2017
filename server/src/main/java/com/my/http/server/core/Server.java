@@ -1,9 +1,12 @@
-package com.epam.Philippov.http.server.core;
+package com.my.http.server.core;
 
 import com.epam.Philippov.http.framework.Request;
-import lombok.SneakyThrows;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -12,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.SneakyThrows;
 
 public class Server {
     private ServerSocket serverSocket = new ServerSocket(8080);

@@ -1,10 +1,10 @@
 package com.epam.Philippov.http.hotelApp.views;
 
-import com.epam.Philippov.http.server.framework.response.FileResponse;
-import com.epam.Philippov.http.server.framework.Request;
-import com.epam.Philippov.http.server.framework.response.Response;
+import com.epam.Philippov.http.framework.response.FileResponse;
+import com.epam.Philippov.http.framework.Request;
+import com.epam.Philippov.http.framework.response.Response;
 
-import com.epam.Philippov.http.server.framework.view.View;
+import com.epam.Philippov.http.framework.view.View;
 import lombok.SneakyThrows;
 
 public class StaticView extends View {

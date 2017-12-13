@@ -1,11 +1,10 @@
-package com.epam.Philippov.http.server.core;
+package com.my.http.server.core;
 
-import com.epam.Philippov.http.framework.Request;
-import com.epam.Philippov.http.framework.response.Response;
-import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
+import lombok.SneakyThrows;
 
 public class SendResponse {
 //    @Override
