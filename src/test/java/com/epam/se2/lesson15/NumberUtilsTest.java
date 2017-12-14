@@ -1,9 +1,10 @@
 package com.epam.se2.lesson15;
 
 import com.epam.se2.lesson15.NumberUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+
 
 class NumberUtilsTest {
     @Test
