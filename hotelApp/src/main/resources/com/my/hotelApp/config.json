@@ -1,8 +1,12 @@
 {
   "urls": [
     {
-      "url": "/",
-      "viewClass": "com.me.hotelApp.views.IndexView"
+      "url": "/hotel/",
+      "viewClass": "com.my.hotelApp.views.IndexView"
+    },
+    {
+      "url": "/hotel/Гостиница «Волхов» – официальный сайт_files",
+      "viewClass": "com.my.hotelApp.views.StaticView"
     }
   ]
 }

@@ -2,9 +2,9 @@ package com.my.http.server.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,27 +17,45 @@ public class ConfigParser {
         return ourInstance;
     }
 
-    public AppConfig getAppConfig(String fileName) {
-        return (AppConfig) parseServerConfig(fileName, AppConfig.class);
+    public AppConfig getAppConfig(InputStream inputStream) {
+        return (AppConfig) parse(inputStream, AppConfig.class);
     }
 
     private ConfigParser() {
-        this.serverConfig = (ServerConfig) parseServerConfig("config.json", ServerConfig.class);
+//        InputStream inputStream = readFile("/Users/lelik9/config.json");
+        File inputStream = readFile("/Users/lelik9/config.json");
+
+        this.serverConfig = (ServerConfig) parse(inputStream, ServerConfig.class);
     }
 
-    private Object parseServerConfig(String fileName, Class configClass) {
-        ObjectMapper mapper = new ObjectMapper();
-        Object config = null;
+
+    private File readFile(String fileName) {
+        InputStream targetStream = null;
+        File file = null;
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource(fileName).getFile());
-            config = mapper.readValue(file, configClass);
+//            File file = new File(classLoader.getResource(fileName).getFile());
+            file = new File(fileName);
+            System.out.println(file);
+            targetStream = new FileInputStream(file);
 
-        } catch (IOException e) {
+        } catch (NullPointerException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        return config;
+        return file;
+    }
+
+    @SneakyThrows
+    private Object parse(File file, Class configClass) {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(file, configClass);
+    }
+
+    @SneakyThrows
+    private Object parse(InputStream inputStream, Class configClass) {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(inputStream, configClass);
     }
 
 }
