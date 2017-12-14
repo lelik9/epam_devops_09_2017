@@ -1,6 +1,7 @@
 package com.my.http.server;
 
-import com.epam.Philippov.http.server.core.Server;
+import com.my.http.server.core.Server;
+
 import java.io.IOException;
 
 public class Main {

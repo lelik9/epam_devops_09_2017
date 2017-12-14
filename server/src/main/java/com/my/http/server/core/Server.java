@@ -1,6 +1,5 @@
 package com.my.http.server.core;
 
-import com.epam.Philippov.http.framework.Request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,10 +14,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.my.http.framework.Request;
 import lombok.SneakyThrows;
 
 public class Server {
-    private ServerSocket serverSocket = new ServerSocket(8080);
+    private ServerSocket serverSocket;
     private HandlerFactory factory;
     private final ExecutorService workers;
 
@@ -26,7 +27,10 @@ public class Server {
     public Server() throws IOException {
         factory = new HandlerFactory();
         workers = Executors.newFixedThreadPool(10);
+        serverSocket = new ServerSocket((Integer) ConfigParser.getInstance().getServerConfig().getServer().getOrDefault("port", 80));
     }
+
+
 
     public void listen() throws IOException {
         while (true) {

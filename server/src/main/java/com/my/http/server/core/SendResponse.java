@@ -4,6 +4,9 @@ package com.my.http.server.core;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
+
+import com.my.http.framework.Request;
+import com.my.http.framework.response.Response;
 import lombok.SneakyThrows;
 
 public class SendResponse {

@@ -1,12 +1,12 @@
 package com.my.hotelApp.views;
 
-import com.epam.Philippov.http.framework.AuthenticationAnnotation;
-import com.epam.Philippov.http.framework.Request;
-import com.epam.Philippov.http.framework.response.FileResponse;
-import com.epam.Philippov.http.framework.response.Response;
-import com.epam.Philippov.http.framework.view.View;
-import com.epam.Philippov.http.server.core.Session;
 
+import com.my.http.framework.AuthenticationAnnotation;
+import com.my.http.framework.Request;
+import com.my.http.framework.response.FileResponse;
+import com.my.http.framework.response.Response;
+import com.my.http.framework.session.Session;
+import com.my.http.framework.view.View;
 
 public class IndexView extends View {
     @Override

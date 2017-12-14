@@ -1,0 +1,8 @@
+{
+  "urls": [
+    {
+      "url": "/",
+      "viewClass": "com.me.hotelApp.views.IndexView"
+    }
+  ]
+}

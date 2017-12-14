@@ -1,14 +1,15 @@
 package com.my.http.server.core;
 
-import com.epam.Philippov.http.framework.Request;
-import com.epam.Philippov.http.framework.middleware.PostMiddleware;
-import com.epam.Philippov.http.framework.middleware.PreFilter;
-import com.epam.Philippov.http.framework.response.Response;
-import com.epam.Philippov.http.framework.view.View;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
+
+import com.my.http.framework.Request;
+import com.my.http.framework.middleware.PostMiddleware;
+import com.my.http.framework.middleware.PreFilter;
+import com.my.http.framework.response.Response;
+import com.my.http.framework.view.View;
 import lombok.SneakyThrows;
 
 
